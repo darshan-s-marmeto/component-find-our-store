@@ -1,0 +1,279 @@
+{{ 'marmeto-find-our-store.css' | asset_url | stylesheet_tag }}
+
+{%- style -%}
+  .section-{{ section.id }} {
+    padding-top: {{ section.settings.padding_top | times: 0.75 | round: 0 }}px;
+    padding-bottom: {{ section.settings.padding_bottom | times: 0.75 | round: 0 }}px;
+  }
+
+  @media screen and (min-width: 750px) {
+    .section-{{ section.id }} {
+      padding-top: {{ section.settings.padding_top }}px;
+      padding-bottom: {{ section.settings.padding_bottom }}px;
+    }
+  }
+{%- endstyle -%}
+
+<marmeto-find-our-store class="section-{{ section.id }}">
+  <div class="marmeto-find-our-store">
+    <h2 class="marmeto-find-our-store__section-heading center">{{ section.settings.heading }}</h2>
+    {% for block in section.blocks %}
+      <div class="marmeto-find-our-store__container">
+        <div class="marmeto-find-our-store__content content-bg-{{ block.id }} {% unless section.settings.full_width %} page-width {% endunless %}">
+          {% if  block.settings.heading_text != blank %}
+            <h2 class="marmeto-find-our-store__content-heading h2">{{ block.settings.heading_text }}</h2>
+          {% endif %}
+
+          {% if block.settings.address_heading != blank %}
+            <p class="marmeto-find-our-store__content-address-heading">{{ block.settings.address_heading }}</p>
+          {% endif %}
+
+          {% if block.settings.subheading_text != blank %}
+            <p class="marmeto-find-our-store__content-subheading">{{ block.settings.subheading_text }}</p>
+          {% endif %}
+
+          {% if block.settings.timings_heading != blank %}
+            <div class="marmeto-find-our-store__content-date-time-heading">
+              {{ block.settings.timings_heading }}
+            </div>
+          {% endif %}
+
+          <div class="marmeto-find-our-store__content-date-time-container">
+            <div class="marmeto-find-our-store__content-date-time">
+              <div class="marmeto-find-our-store__content-date">
+                {{ block.settings.day1 }}
+              </div>
+              <div class="marmeto-find-our-store__content-time">
+                {{ block.settings.timing1 }}
+              </div>
+            </div>
+            <div class="marmeto-find-our-store__content-date-time">
+              <div class="marmeto-find-our-store__content-date">
+                {{ block.settings.day2 }}
+              </div>
+              <div class="marmeto-find-our-store__content-time">
+                {{ block.settings.timing2 }}
+              </div>
+            </div>
+            <div class="marmeto-find-our-store__content-date-time">
+              <div class="marmeto-find-our-store__content-date">
+                {{ block.settings.day3 }}
+              </div>
+              <div class="marmeto-find-our-store__content-time">
+                {{ block.settings.timing3}}
+              </div>
+            </div>
+          </div>
+          {% if block.settings.button_text != blank %}
+            <a class="marmeto-find-our-store__content-button button-{{ block.id }}" href="{{ block.settings.button_url }}">
+              {{- block.settings.button_text -}}
+            </a>
+          {% endif %}
+        </div>
+        <div class="marmeto-find-our-store__map">
+          {% if block.settings.custom_liquid != blank %}
+            {{ block.settings.custom_liquid }}
+          {% endif %}
+        </div>
+      </div>
+    {% endfor %}
+  </div>
+</marmeto-find-our-store>
+
+{% style %}
+{% for block in section.blocks %}
+  .marmeto-find-our-store__map {
+    height: {{ block.settings.mobile_height }}px;
+  }
+  
+  .content-bg-{{ block.id }}{
+    background: {{ block.settings.content_bg_color}}
+  }
+  @media screen and (min-width: 768px) {
+    .marmeto-find-our-store__container,
+    .marmeto-find-our-store__map {
+      height: {{ block.settings.desktop_height }}px;
+    }
+  }
+  {% endfor %}
+   {% for block in section.blocks %}
+     .button-{{ block.id }} {
+       background: {{ block.settings.button_bg_color }};
+       color: {{ block.settings.button_text_color }};
+     }
+   {% endfor %}
+{% endstyle %}
+
+{% schema %}
+{
+  "name": "Find our store",
+  "settings": [
+    {
+      "type": "header",
+      "content": "General settings"
+    },
+    {
+      "type": "checkbox",
+      "id": "full_width",
+      "label": "Make section narrow",
+      "default": false
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading"
+    },
+    {
+      "type": "header",
+      "content": "Section padding"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 100,
+      "step": 2,
+      "unit": "px",
+      "label": "Padding top",
+      "default": 36
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 100,
+      "step": 2,
+      "unit": "px",
+      "label": "Padding bottom",
+      "default": 36
+    }
+  ],
+  "blocks": [
+    {
+      "type": "Map",
+      "name": "Address",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "text",
+          "id": "heading_text",
+          "label": "Heading Text",
+          "default": "Find our story"
+        },
+        {
+          "type": "text",
+          "id":"address_heading",
+          "label": "Address Heading",
+          "default":"Address"
+        },
+        {
+          "type": "text",
+          "id": "subheading_text",
+          "label": "Address",
+          "default": "#1, 1st main road, Bangalore 560001, Karnataka, India"
+        },
+        {
+          "type": "text",
+          "id": "timings_heading",
+          "label": "Heading"
+        },
+        {
+          "type": "text",
+          "id": "day1",
+          "label": "Day 1"
+        },
+        {
+          "type": "text",
+          "id": "timing1",
+          "label": "Timings 1"
+        },
+        {
+          "type": "text",
+          "id": "day2",
+          "label": "Day 2"
+        },
+        {
+          "type": "text",
+          "id": "timing2",
+          "label": "Timings 2"
+        },
+        {
+          "type": "text",
+          "id": "day3",
+          "label": "Day 3"
+        },
+        {
+          "type": "text",
+          "id": "timing3",
+          "label": "Timings 3"
+        },
+        {
+          "type": "url",
+          "id": "button_url",
+          "label": "Button Url"
+        },
+        {
+          "type": "text",
+          "id": "button_text",
+          "label": "Button Text",
+          "default":"Get directions"
+        },
+        {
+          "type": "color",
+          "id": "button_text_color",
+          "label": "Text color"
+        },
+        {
+          "type": "color",
+          "id": "button_bg_color",
+          "label": "Background"
+        },
+        {
+          "type": "liquid",
+          "id": "custom_liquid",
+          "label": "Add location",
+          "info": "Add the iframe code from maps here."
+        },
+        {
+          "type": "range",
+          "id": "desktop_height",
+          "label": "Map Desktop height",
+          "min": 400,
+          "max": 750,
+          "unit": "px",
+          "step": 10,
+          "default": 550,
+          "info": "Set map desktop height"
+        },
+        {
+          "type": "range",
+          "id": "mobile_height",
+          "label": "Map Mobile height",
+          "min": 300,
+          "max": 550,
+          "unit": "px",
+          "step": 10,
+          "default": 400,
+          "info": "Set map mobile height"
+        },
+        {
+          "type": "color",
+          "id":"content_bg_color",
+          "label": "Content Background color"
+        }
+      ]
+    }
+  ],
+
+  "presets": [
+    {
+      "name": "Find our store",
+      "blocks": [
+        {
+          "type": "Map"
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}
